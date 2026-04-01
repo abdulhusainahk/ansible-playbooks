@@ -1,19 +1,13 @@
-#- hosts: master
-#  become: yes
-#  roles:
-#     - { role: ansible-role-mysql,
-#               mysql_db: [{ name: example_db1 },
-#                          { name: example_db2 }],
-#               mysql_users: [{ name: user1, pass: verystrong, priv: "*.*:ALL" },
-#                             { name: user2, pass: verystrongtoo }],
-#               mysql_db_id: 8 }
-- hosts: slave
+# MySQL Slave Setup
+# Usage: ansible-playbook -i inventory/hosts mysql-playbook.yml
+- hosts: mysql-slave
   become: yes
   roles:
-     - { role: ansible-role-mysql,
-               mysql_db: none,
-               mysql_users: none,
-               mysql_repl_role: slave,
-               mysql_repl_master: 13.57.219.95,
-               mysql_db_id: 9,
-               mysql_repl_user: [{ name: repl, pass: verystrong }] }
+    - role: ansible-role-mysql
+      mysql_db: none
+      mysql_users: none
+      mysql_repl_role: slave
+      mysql_repl_master: "{{ hostvars[groups['mysql-master'][0]]['ansible_host'] }}"
+      mysql_db_id: 9
+      mysql_repl_user:
+        - { name: repl, pass: "{{ mysql_repl_password | default('changeme') }}" }

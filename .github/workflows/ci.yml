@@ -1,0 +1,36 @@
+name: Ansible Lint
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Ansible Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install ansible-lint yamllint
+
+      - name: YAML Lint
+        run: |
+          yamllint -d relaxed . || true
+
+      - name: Ansible Lint
+        run: |
+          ansible-lint --exclude .github/ || true

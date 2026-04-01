@@ -1,23 +1,20 @@
---- 
-- 
-  hosts: dgset-1
-  sudo: true
-  tasks: 
-    - 
-      copy: 
+---
+- hosts: dgset-1
+  become: true
+  tasks:
+    - name: Copy plugin
+      copy:
         backup: true
         dest: /usr/lib/nagios/plugins/
-        mode: 493
+        mode: "0755"
         src: /tmp/check_debian_packages
-      name: "Copy plugin"
-    - 
-      copy: 
+    - name: Copy deb file
+      copy:
         backup: true
         dest: /etc/apt/
         src: /tmp/sources.list
-      name: "Copy deb file"
-    - 
-      cron: 
+    - name: Schedule package update
+      cron:
         backup: true
         hour: "6"
         job: "apt-get update"

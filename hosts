@@ -1,7 +1,0 @@
-[master]
-13.57.219.95 ansible_user=ubuntu
-
-[slave]
-13.57.219.95 ansible_user=ubuntu
-
-

@@ -1,9 +1,20 @@
 - hosts: mysql-master
   become: yes
   roles:
-  - {role: ansible-role-mysql, mysql_db: none, mysql_users: [{name: jack, pass: 123456, priv: "*.*:ALL"}],mysql_db_id: 1008 }
+    - role: ansible-role-mysql
+      mysql_db: none
+      mysql_users:
+        - { name: jack, pass: "{{ mysql_user_password | default('changeme') }}", priv: "*.*:ALL" }
+      mysql_db_id: 1008
 
 - hosts: mysql-slave
   become: yes
   roles:
-  - {role: ansible-role-mysql, mysql_db: none,mysql_users: none,mysql_repl_role: slave,mysql_repl_master: 13.56.155.32,mysql_db_id: 1009,mysql_repl_user: [{name: repl, pass: 123456}] }
+    - role: ansible-role-mysql
+      mysql_db: none
+      mysql_users: none
+      mysql_repl_role: slave
+      mysql_repl_master: "{{ hostvars[groups['mysql-master'][0]]['ansible_host'] }}"
+      mysql_db_id: 1009
+      mysql_repl_user:
+        - { name: repl, pass: "{{ mysql_repl_password | default('changeme') }}" }

@@ -1,0 +1,24 @@
+# Ansible Inventory
+# Copy this file to inventory/hosts and update with your actual IPs
+#
+# Usage: ansible-playbook -i inventory/hosts <playbook>.yml
+
+[mysql-master]
+# master_ip ansible_user=ubuntu
+
+[mysql-slave]
+# slave_ip ansible_user=ubuntu
+
+[lb]
+# haproxy_ip ansible_user=root
+
+[webservers]
+# web1_ip ansible_user=root
+# web2_ip ansible_user=root
+
+[master]
+# hadoop_namenode_ip ansible_user=root
+
+[slave]
+# hadoop_datanode1_ip ansible_user=root
+# hadoop_datanode2_ip ansible_user=root

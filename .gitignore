@@ -1,0 +1,13 @@
+*.retry
+*.pyc
+__pycache__/
+.vagrant/
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+inventory/hosts
+!inventory/hosts.example
